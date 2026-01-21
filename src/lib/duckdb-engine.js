@@ -54,7 +54,7 @@ class DuckDBEngine {
     const { skipRows = 0, customHeaders = null } = options;
 
     if (skipRows > 0 || customHeaders) {
-      const lines = content.split('\n');
+      const lines = content.split(/\r?\n/);
 
       if (customHeaders) {
         // Skip header rows and prepend custom headers
@@ -287,7 +287,7 @@ class DuckDBEngine {
    */
   async getRawLines(file, numLines = 30) {
     const content = await file.text();
-    const lines = content.split('\n').slice(0, numLines);
+    const lines = content.split(/\r?\n/).slice(0, numLines);
     return lines;
   }
 
