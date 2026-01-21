@@ -54,7 +54,7 @@ class DuckDBEngine {
     const { skipRows = 0, customHeaders = null } = options;
 
     if (skipRows > 0 || customHeaders) {
-      const lines = content.split('\n');
+      const lines = content.split(/\r?\n/);
 
       if (customHeaders) {
         // Skip header rows and prepend custom headers
@@ -80,7 +80,8 @@ class DuckDBEngine {
         null_padding=true,
         ignore_errors=true,
         strict_mode=false,
-        auto_detect=true
+        auto_detect=true,
+        parallel=false
       )
     `);
 
@@ -122,13 +123,14 @@ class DuckDBEngine {
         null_padding=true,
         ignore_errors=true,
         strict_mode=false,
-        auto_detect=true
+        auto_detect=true,
+        parallel=false
       )
     `);
-    
+
     const countResult = await this.conn.query(`SELECT COUNT(*) as count FROM ${name}`);
     const rowCount = countResult.toArray()[0].count;
-    
+
     this.tables.set(name, {
       originalName: tableName,
       rowCount: Number(rowCount),
@@ -287,7 +289,7 @@ class DuckDBEngine {
    */
   async getRawLines(file, numLines = 30) {
     const content = await file.text();
-    const lines = content.split('\n').slice(0, numLines);
+    const lines = content.split(/\r?\n/).slice(0, numLines);
     return lines;
   }
 
