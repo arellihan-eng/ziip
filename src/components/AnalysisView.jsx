@@ -9,7 +9,6 @@ import SaveRecipeModal, { LoginPrompt, SchemaValidator } from './SaveRecipeModal
 export default function AnalysisView({ initialFiles, onBack, pendingRecipe }) {
   const { user, signIn, signOut, isAuthenticated } = useAuth();
   const { recipes: savedRecipes, saveRecipe } = useRecipes();
-  const [apiKey, setApiKey] = useState(localStorage.getItem('anthropic_key') || '');
   const [question, setQuestion] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [explanation, setExplanation] = useState('');
@@ -43,7 +42,7 @@ export default function AnalysisView({ initialFiles, onBack, pendingRecipe }) {
     explainLastResults,
     dropTable,
     reset
-  } = useZiipEngine(apiKey);
+  } = useZiipEngine();
 
   // Load initial files
   useEffect(() => {
@@ -78,7 +77,7 @@ export default function AnalysisView({ initialFiles, onBack, pendingRecipe }) {
       } catch (err) {
         console.error('Failed to run recipe:', err);
       }
-    } else if (apiKey) {
+    } else {
       const sugg = await getSuggestions();
       setSuggestions(sugg);
     }
@@ -97,11 +96,9 @@ export default function AnalysisView({ initialFiles, onBack, pendingRecipe }) {
         }));
       }
     }
-    if (apiKey) {
-      const sugg = await getSuggestions();
-      setSuggestions(sugg);
-    }
-  }, [loadFileSmart, getSchema, getSample, getSuggestions, apiKey]);
+    const sugg = await getSuggestions();
+    setSuggestions(sugg);
+  }, [loadFileSmart, getSchema, getSample, getSuggestions]);
 
   const handleStackTables = useCallback(async (tableNames, newName) => {
     if (tableNames.length < 2) return;
@@ -256,11 +253,6 @@ export default function AnalysisView({ initialFiles, onBack, pendingRecipe }) {
     reader.readAsText(file);
   };
 
-  const handleApiKeySave = (key) => {
-    setApiKey(key);
-    localStorage.setItem('anthropic_key', key);
-  };
-
   const handleReset = () => {
     reset();
     setTablePreviews({});
@@ -334,23 +326,6 @@ export default function AnalysisView({ initialFiles, onBack, pendingRecipe }) {
       </header>
 
       <main className="relative z-10 max-w-5xl mx-auto px-6 pb-20">
-        {/* API Key Input */}
-        {!apiKey && (
-          <div className="mb-8">
-            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold mb-2">Enter your Anthropic API Key</h3>
-              <p className="text-slate-400 text-sm mb-4">Your key stays in your browser. We never see it.</p>
-              <input
-                type="password"
-                placeholder="sk-ant-..."
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 transition"
-                onBlur={(e) => handleApiKeySave(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleApiKeySave(e.target.value)}
-              />
-            </div>
-          </div>
-        )}
-
         {/* Status */}
         {!isInitialized && (
           <div className="text-center py-12 text-slate-400">
