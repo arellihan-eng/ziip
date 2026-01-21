@@ -5,18 +5,17 @@ const AuthContext = createContext(null);
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-function AuthProviderInner({ children }) {
+function AuthProviderWithGoogle({ children }) {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('ziip_user');
     return saved ? JSON.parse(saved) : null;
   });
   const [loading, setLoading] = useState(false);
 
-  // Google OAuth login
+  // Google OAuth login - only called when inside GoogleOAuthProvider
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        // Fetch user info from Google
         const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
         });
@@ -47,29 +46,10 @@ function AuthProviderInner({ children }) {
 
   const signIn = useCallback(async (provider) => {
     setLoading(true);
-
     if (provider === 'google') {
-      if (!GOOGLE_CLIENT_ID) {
-        // Fallback to demo mode if no client ID configured
-        console.warn('No Google Client ID configured, using demo mode');
-        const demoUser = {
-          id: 'demo_' + Date.now(),
-          email: 'demo@ziip.community',
-          name: 'Demo User',
-          avatar: null,
-          provider: 'demo'
-        };
-        await new Promise(resolve => setTimeout(resolve, 300));
-        setUser(demoUser);
-        localStorage.setItem('ziip_user', JSON.stringify(demoUser));
-        setLoading(false);
-        return demoUser;
-      }
-
       googleLogin();
-      return null; // Will be handled by onSuccess callback
+      return null;
     }
-
     throw new Error(`Unknown provider: ${provider}`);
   }, [googleLogin]);
 
@@ -85,15 +65,50 @@ function AuthProviderInner({ children }) {
   );
 }
 
+function AuthProviderDemo({ children }) {
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('ziip_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [loading, setLoading] = useState(false);
+
+  const signIn = useCallback(async (provider) => {
+    setLoading(true);
+    console.warn('No Google Client ID configured, using demo mode');
+    const demoUser = {
+      id: 'demo_' + Date.now(),
+      email: 'demo@ziip.community',
+      name: 'Demo User',
+      avatar: null,
+      provider: 'demo'
+    };
+    await new Promise(resolve => setTimeout(resolve, 300));
+    setUser(demoUser);
+    localStorage.setItem('ziip_user', JSON.stringify(demoUser));
+    setLoading(false);
+    return demoUser;
+  }, []);
+
+  const signOut = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem('ziip_user');
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, loading, signIn, signOut, isAuthenticated: !!user }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
 export function AuthProvider({ children }) {
-  // If no client ID, render without GoogleOAuthProvider (demo mode)
   if (!GOOGLE_CLIENT_ID) {
-    return <AuthProviderInner>{children}</AuthProviderInner>;
+    return <AuthProviderDemo>{children}</AuthProviderDemo>;
   }
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <AuthProviderInner>{children}</AuthProviderInner>
+      <AuthProviderWithGoogle>{children}</AuthProviderWithGoogle>
     </GoogleOAuthProvider>
   );
 }
