@@ -162,6 +162,19 @@ RULES:
 9. For date operations, use DuckDB date functions (DATE_TRUNC, DATE_PART, etc.)
 10. When columns look like months (Jan-25, Feb-25, etc.), they are likely numeric values that need UNPIVOT to analyze across time
 11. Always reference the exact table name from the schema, never invent or abbreviate table names
+12. CRITICAL: Always generate COMPLETE SQL statements. Never leave a query unfinished.
+
+MULTI-TABLE QUERIES (JOINs):
+When joining multiple tables:
+- Use short, clear aliases (a, b, c) and reference columns with alias.column
+- Always specify the JOIN type (INNER JOIN, LEFT JOIN, etc.)
+- Always include the ON clause with the join condition
+- For fuzzy string matching between tables, use: jaro_winkler_similarity(a."col", b."col") > 0.85
+- Example complete JOIN:
+  SELECT a."name", b."value"
+  FROM table_one a
+  INNER JOIN table_two b ON a."id" = b."id"
+  WHERE a."status" = 'active'
 
 DUCKDB-SPECIFIC FEATURES YOU CAN USE:
 - UNPIVOT for converting columns to rows
@@ -198,28 +211,85 @@ The failing SQL was: ${previousError.sql}
 Please fix the SQL query. Common issues:
 - Column names with hyphens/spaces need double quotes: "May-25"
 - Don't use empty quotes ""
-- Ensure all quotes are properly closed
-- Use exact table names from the schema, NOT aliases like "t" or "u"
+- Ensure all quotes and parentheses are properly balanced and closed
+- Use exact table names from the schema, NOT aliases like "t" or "u" for single tables
 - If error says "table not found", check the schema for the correct table name
+- For JOINs: always include complete ON clause (e.g., ON a."id" = b."id")
+- Make sure the query is COMPLETE - don't leave any clause unfinished
+- If "syntax error at end of input", the query is incomplete - add missing parts
 
-Generate the corrected SQL query:`;
+Generate the COMPLETE corrected SQL query:`;
   }
 
   const response = await getClient().messages.create({
     model: 'claude-sonnet-4-20250514',
-    max_tokens: 1024,
+    max_tokens: 2048,
     system: SQL_SYSTEM_PROMPT,
     messages: [
       { role: 'user', content: userPrompt }
     ]
   });
 
-  const sql = response.content[0].text.trim();
-  return sql
+  let sql = response.content[0].text.trim();
+  sql = sql
     .replace(/^```sql\n?/i, '')
     .replace(/^```\n?/, '')
     .replace(/\n?```$/g, '')
     .trim();
+
+  // Validate SQL completeness
+  const validationError = validateSQL(sql);
+  if (validationError) {
+    throw new Error(`Generated SQL appears incomplete: ${validationError}`);
+  }
+
+  return sql;
+}
+
+/**
+ * Basic SQL validation to catch incomplete queries
+ */
+function validateSQL(sql) {
+  if (!sql || sql.length < 10) {
+    return 'Query is too short or empty';
+  }
+
+  // Check for balanced parentheses
+  const openParens = (sql.match(/\(/g) || []).length;
+  const closeParens = (sql.match(/\)/g) || []).length;
+  if (openParens !== closeParens) {
+    return `Unbalanced parentheses: ${openParens} open, ${closeParens} close`;
+  }
+
+  // Check for balanced quotes (simple check - pairs of double quotes)
+  const doubleQuotes = (sql.match(/"/g) || []).length;
+  if (doubleQuotes % 2 !== 0) {
+    return 'Unbalanced double quotes';
+  }
+
+  // Check for balanced single quotes
+  const singleQuotes = (sql.match(/'/g) || []).length;
+  if (singleQuotes % 2 !== 0) {
+    return 'Unbalanced single quotes';
+  }
+
+  // Check that query starts with a valid keyword
+  const startsValid = /^\s*(SELECT|WITH|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)/i.test(sql);
+  if (!startsValid) {
+    return 'Query does not start with a valid SQL keyword';
+  }
+
+  // Check for incomplete JOIN (has JOIN but no ON)
+  if (/\bJOIN\b/i.test(sql) && !/\bON\b/i.test(sql) && !/\bUSING\b/i.test(sql)) {
+    return 'JOIN clause appears to be missing ON condition';
+  }
+
+  // Check for dangling keywords at end
+  if (/\b(SELECT|FROM|WHERE|AND|OR|JOIN|ON|ORDER BY|GROUP BY)\s*$/i.test(sql)) {
+    return 'Query ends with incomplete clause';
+  }
+
+  return null; // No validation errors
 }
 
 async function analyzeAndSuggest(schemaContext) {
