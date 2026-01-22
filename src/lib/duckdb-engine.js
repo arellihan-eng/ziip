@@ -289,12 +289,45 @@ class DuckDBEngine {
       type: f.type.toString()
     }));
 
+    // Clean up any values that have embedded quotes from CSV parsing issues
+    const cleanedRows = rows.map(row => {
+      const cleanRow = {};
+      for (const [key, value] of Object.entries(row)) {
+        cleanRow[key] = this.cleanValue(value);
+      }
+      return cleanRow;
+    });
+
     return {
-      rows,
+      rows: cleanedRows,
       schema,
-      rowCount: rows.length,
+      rowCount: cleanedRows.length,
       executionTime: Math.round(endTime - startTime)
     };
+  }
+
+  /**
+   * Clean a value that may have embedded quotes from CSV parsing
+   */
+  cleanValue(value) {
+    // Handle null/undefined
+    if (value == null) return value;
+
+    // Handle BigInt
+    if (typeof value === 'bigint') return Number(value);
+
+    // Handle strings with embedded quotes
+    if (typeof value === 'string') {
+      // Remove surrounding quotes if present (e.g., "value" -> value)
+      if (value.startsWith('"') && value.endsWith('"')) {
+        value = value.slice(1, -1);
+      }
+      // Unescape double quotes (e.g., "" -> ")
+      value = value.replace(/""/g, '"');
+      // If value is now a simple number, it can stay as string (DuckDB typed it)
+    }
+
+    return value;
   }
 
   /**

@@ -469,7 +469,50 @@ export function cleanContent(content) {
   // Replace other problematic Unicode
   content = content.replace(/\u00A0/g, ' '); // Non-breaking space to regular space
 
+  // Fix double-quoted values (e.g., ""value"" -> "value")
+  // This handles cases where CSV exports double-escape quotes
+  content = fixDoubleQuotedValues(content);
+
   return content;
+}
+
+/**
+ * Fix double-quoted values in CSV content
+ * Handles patterns like: ,""value"", -> ,"value",
+ * And standalone double-quotes around simple values: ,"2069033", that shouldn't be quoted
+ */
+function fixDoubleQuotedValues(content) {
+  const lines = content.split('\n');
+  const fixedLines = lines.map(line => {
+    // Skip empty lines
+    if (!line.trim()) return line;
+
+    // Fix double-double quotes at field boundaries: ,""value"", -> ,"value",
+    // Pattern: comma or start, then "", then content, then "", then comma or end
+    line = line.replace(/(^|,)""([^"]*)""/g, '$1"$2"');
+
+    // Fix triple+ quotes that can occur from multiple export/import cycles
+    line = line.replace(/"{3,}/g, '"');
+
+    // Fix cases where simple values (numbers, plain text) are unnecessarily quoted
+    // but only if they don't contain the delimiter or special chars
+    // This regex finds quoted simple values and removes the quotes
+    line = line.replace(/"(\d+(?:\.\d+)?)"/g, (match, num, offset) => {
+      // Check if this is inside a larger quoted string by looking at context
+      // Count quotes before this position
+      const before = line.substring(0, offset);
+      const quoteCount = (before.match(/"/g) || []).length;
+      // If even number of quotes before, we're not inside a quoted string
+      if (quoteCount % 2 === 0) {
+        return num; // Remove quotes from simple number
+      }
+      return match; // Keep as is
+    });
+
+    return line;
+  });
+
+  return fixedLines.join('\n');
 }
 
 /**
