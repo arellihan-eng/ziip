@@ -1,0 +1,5 @@
+id,bool_yn,bool_tf,bool_10,bool_yesno
+1,Y,TRUE,1,Yes
+2,N,FALSE,0,No
+3,Y,True,1,YES
+4,N,False,0,NO

@@ -1,0 +1,546 @@
+{
+  "generated": "2026-01-21T16:48:10.427Z",
+  "outputDir": "/Users/andy.rellihan/ziip/tests/csv-edge-cases",
+  "tests": [
+    {
+      "name": "01-encoding-utf8.csv",
+      "category": "encoding",
+      "encoding": "utf8",
+      "expectedRows": 4,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "01-encoding-utf8-bom.csv",
+      "category": "encoding",
+      "encoding": "utf8-bom",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "01-encoding-utf16le.csv",
+      "category": "encoding",
+      "encoding": "utf16le",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "01-encoding-utf16be.csv",
+      "category": "encoding",
+      "encoding": "utf16be",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "01-encoding-latin1.csv",
+      "category": "encoding",
+      "encoding": "latin1",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "02-lineending-crlf.csv",
+      "category": "line-endings",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "02-lineending-cr.csv",
+      "category": "line-endings",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "02-lineending-mixed.csv",
+      "category": "line-endings",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "03-delimiter-tab.tsv",
+      "category": "delimiter",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "03-delimiter-semicolon.csv",
+      "category": "delimiter",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "03-delimiter-pipe.csv",
+      "category": "delimiter",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "04-quote-embedded-comma.csv",
+      "category": "quoting",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "04-quote-embedded-quotes.csv",
+      "category": "quoting",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "04-quote-embedded-newline.csv",
+      "category": "quoting",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "04-quote-smart-quotes.csv",
+      "category": "quoting",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "04-quote-unbalanced.csv",
+      "category": "quoting",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": true,
+      "note": null
+    },
+    {
+      "name": "05-header-spaces.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "05-header-special-chars.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "05-header-duplicates.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "05-header-empty.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "05-header-numeric.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "05-header-reserved.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "05-header-long.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "05-header-newline.csv",
+      "category": "headers",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "06-structure-empty.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 0,
+      "skipRows": 0,
+      "expectError": true,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "06-structure-headers-only.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 0,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "06-structure-single-column.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 4,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "06-structure-single-row.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 1,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "06-structure-ragged.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 4,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "06-structure-blank-rows.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": "DuckDB may count blank rows"
+    },
+    {
+      "name": "06-structure-trailing-blank.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "06-structure-metadata-header.csv",
+      "category": "structure",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 3,
+      "expectError": false,
+      "expectWarning": false,
+      "note": "Requires skipRows=3"
+    },
+    {
+      "name": "07-datatype-dates.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-excel-dates.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-currency.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-percentages.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-thousands.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-scientific.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-leading-zeros.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-negative-parens.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-booleans.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 4,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "07-datatype-nulls.csv",
+      "category": "datatypes",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "08-chars-emoji.csv",
+      "category": "characters",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "08-chars-unicode-special.csv",
+      "category": "characters",
+      "encoding": "utf8",
+      "expectedRows": 4,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "08-chars-rtl.csv",
+      "category": "characters",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "08-chars-control.csv",
+      "category": "characters",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "08-chars-null-bytes.csv",
+      "category": "characters",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "09-excel-formulas.csv",
+      "category": "excel",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "09-excel-errors.csv",
+      "category": "excel",
+      "encoding": "utf8",
+      "expectedRows": 5,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "10-size-wide.csv",
+      "category": "size",
+      "encoding": "utf8",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "10-size-large-cells.csv",
+      "category": "size",
+      "encoding": "utf8",
+      "expectedRows": 2,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "10-size-10k-rows.csv",
+      "category": "size",
+      "encoding": "utf8",
+      "expectedRows": 10000,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "11-combo-european-excel.csv",
+      "category": "combined",
+      "encoding": "utf8-bom",
+      "expectedRows": 3,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    },
+    {
+      "name": "11-combo-full-unicode.csv",
+      "category": "combined",
+      "encoding": "utf8-bom",
+      "expectedRows": 4,
+      "skipRows": 0,
+      "expectError": false,
+      "expectWarning": false,
+      "note": null
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+name,description,value
+Item1,"This is fine",100
+Item2,"Missing end quote,200
+Item3,No quotes needed,300

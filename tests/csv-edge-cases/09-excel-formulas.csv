@@ -1,0 +1,4 @@
+item,quantity,price,total
+Widget,10,5.00,=B2*C2
+Gadget,5,10.00,=B3*C3
+TOTAL,=SUM(B2:B3),,=SUM(D2:D3)

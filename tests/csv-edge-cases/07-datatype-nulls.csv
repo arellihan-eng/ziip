@@ -1,0 +1,4 @@
+id,null_empty,null_word,null_na,null_dash,null_excel
+1,,NULL,N/A,-,#N/A
+2,,null,NA,--,#VALUE!
+3,, ,n/a,,#REF!

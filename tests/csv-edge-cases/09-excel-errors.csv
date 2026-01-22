@@ -1,0 +1,6 @@
+formula,result
+=1/0,#DIV/0!
+=UNKNOWN(),#NAME?
+=A1+BadRef,#REF!
+=VALUE("text"),#VALUE!
+Missing,#N/A
